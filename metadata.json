@@ -1,0 +1,6 @@
+{
+  "name": "SRA SHRIJI AGRI GENETICS SEEDS",
+  "description": "Premium corporate website and AI agricultural suite for SRA SHRIJI AGRI GENETICS SEEDS PVT LTD, engineered for next-generation farming, seed quality, and interactive dealer and crop tools.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
