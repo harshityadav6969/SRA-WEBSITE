@@ -514,9 +514,10 @@ export default function ProductSection({
               const isSelectedActive = activeProduct.id === p.id;
               
               // Map name to display format: BAG + name (without SRA if starts with SRA)
-              const displaySeedName = p.name.startsWith('SRA') 
-                ? p.name.replace('SRA', 'BAG').trim() 
-                : `BAG ${p.name}`;
+              // Map name to display format: SRA + name (without SRA if starts with SRA)
+const displaySeedName = p.name.startsWith('SRA') 
+  ? p.name 
+  : `SRA ${p.name}`;
 
               // Determine default bag weight
               const sizeLabel = p.availableSizes && p.availableSizes.length > 0 
@@ -645,7 +646,7 @@ export default function ProductSection({
                     }`}
                   >
                     <div>
-                      <p className="text-xs font-bold text-gray-900">BAG {p.name.replace('SRA', '').trim()}</p>
+                      <p className="text-xs font-bold text-gray-900">{p.name.startsWith('SRA') ? p.name : `SRA ${p.name}`}</p>
                       <p className="text-[10px] text-gray-400 uppercase tracking-widest">{p.cropType}</p>
                     </div>
                     <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-black ${
@@ -843,8 +844,8 @@ export default function ProductSection({
                         Balaji Agri Seeds Elite Range
                       </span>
                       <h2 className="text-2xl md:text-3.5xl font-black text-gray-900 font-display mt-3 tracking-tight">
-                        BAG {detailProduct.name.replace('SRA', '').trim()} Hybrid {detailProduct.cropType}
-                      </h2>
+  {detailProduct.name.startsWith('SRA') ? detailProduct.name : `SRA ${detailProduct.name}`} Hybrid {detailProduct.cropType}
+</h2>
                       <p className="text-xs font-serif italic text-brand-gold font-bold mt-1">
                         "{detailProduct.tagline}"
                       </p>
@@ -1205,7 +1206,7 @@ export default function ProductSection({
                 <div className="w-px h-6 bg-white/10 mx-1" />
                 <button
                   onClick={() => {
-                    simulateDownload(`POP_Guide_BAG_${viewPdfProduct.name.replace('SRA', '').trim()}`);
+                   simulateDownload(`POP_Guide_SRA_${viewPdfProduct.name.replace('SRA', '').trim()}`);
                     setViewPdfProduct(null);
                   }}
                   className="flex items-center gap-1.5 bg-brand-green hover:bg-brand-green/90 text-white text-xs font-black px-4 py-2 rounded-lg transition-all cursor-pointer shadow-md"
@@ -1283,7 +1284,7 @@ export default function ProductSection({
                       <div className="space-y-1.5 text-[10px] font-bold">
                         <div className="flex justify-between border-b border-gray-50 pb-1">
                           <span className="text-gray-400">HYBRID:</span>
-                          <span className="text-gray-800 uppercase">BAG {viewPdfProduct.name.replace('SRA', '').trim()}</span>
+                          <span className="text-gray-800 uppercase">{viewPdfProduct.name.startsWith('SRA') ? viewPdfProduct.name : `SRA ${viewPdfProduct.name}`}</span>
                         </div>
                         <div className="flex justify-between border-b border-gray-50 pb-1">
                           <span className="text-gray-400">GERMINATION:</span>
