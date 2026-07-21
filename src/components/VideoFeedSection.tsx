@@ -374,9 +374,9 @@ export default function VideoFeedSection({ currentLang, onSelectProduct }: Video
                       <p className="text-[10px] text-emerald-400 font-bold mt-0.5">
                         {matchedProduct.cropType} Seed
                       </p>
-                      <p className="text-[11px] font-black text-brand-gold mt-1">
+                      {/* <p className="text-[11px] font-black text-brand-gold mt-1">
                         {feed.price}
-                      </p>
+                      </p> */}
                     </div>
 
                     {/* Right action button */}
