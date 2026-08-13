@@ -1,0 +1,107 @@
+{
+  "coupons": {
+    "SRA4589231": {
+      "code": "SRA4589231",
+      "rewardAmount": 500,
+      "status": "redeemed",
+      "createdAt": "2026-08-01T10:00:00.000Z",
+      "redeemedAt": "2026-08-13T23:41:18.007Z",
+      "redeemedByRef": "SRA-20260813-852730"
+    },
+    "SRA1029384": {
+      "code": "SRA1029384",
+      "rewardAmount": 1000,
+      "status": "active",
+      "createdAt": "2026-08-01T10:00:00.000Z"
+    },
+    "SRA7766554": {
+      "code": "SRA7766554",
+      "rewardAmount": 250,
+      "status": "active",
+      "createdAt": "2026-08-01T10:00:00.000Z"
+    },
+    "SRA8899001": {
+      "code": "SRA8899001",
+      "rewardAmount": 1500,
+      "status": "active",
+      "createdAt": "2026-08-01T10:00:00.000Z"
+    },
+    "SRA3322110": {
+      "code": "SRA3322110",
+      "rewardAmount": 500,
+      "status": "active",
+      "createdAt": "2026-08-01T10:00:00.000Z"
+    },
+    "SRA9988776": {
+      "code": "SRA9988776",
+      "rewardAmount": 2000,
+      "status": "active",
+      "createdAt": "2026-08-01T10:00:00.000Z"
+    },
+    "SRA5544332": {
+      "code": "SRA5544332",
+      "rewardAmount": 750,
+      "status": "active",
+      "createdAt": "2026-08-01T10:00:00.000Z"
+    },
+    "SRA1122334": {
+      "code": "SRA1122334",
+      "rewardAmount": 500,
+      "status": "redeemed",
+      "createdAt": "2026-07-25T10:00:00.000Z",
+      "redeemedAt": "2026-08-02T14:30:00.000Z",
+      "redeemedByRef": "SRA-20260802-000088"
+    }
+  },
+  "redemptions": [
+    {
+      "referenceId": "SRA-20260813-852730",
+      "couponCode": "SRA4589231",
+      "rewardAmount": 500,
+      "retailerName": "harshit yadav",
+      "shopName": "SHIVA BHEEJ BHANDAR",
+      "distributor": "HARSHIT YADAV",
+      "village": "ETAH",
+      "tehsil": "KASGANJ",
+      "district": "RAIPUR",
+      "state": "Uttar Pradesh",
+      "phone": "9760071788",
+      "email": "harshityadav6969@gmail.com",
+      "gst": "SGDHDHS82732",
+      "shopPhoto": "",
+      "submittedAt": "2026-08-13T23:41:18.007Z"
+    },
+    {
+      "referenceId": "SRA-20260802-000088",
+      "couponCode": "SRA1122334",
+      "rewardAmount": 500,
+      "retailerName": "Vikram Singh",
+      "shopName": "Kisan Agro Kendra",
+      "distributor": "Gupta Traders Pvt Ltd",
+      "village": "Khedi",
+      "tehsil": "Karnal",
+      "district": "Karnal",
+      "state": "Haryana",
+      "phone": "9812044332",
+      "email": "vikram.kisan@gmail.com",
+      "gst": "06AAACK1234F1Z9",
+      "submittedAt": "2026-08-02T14:30:00.000Z"
+    }
+  ],
+  "emailLogs": [
+    {
+      "id": "EML-1786664478175",
+      "to": "srashrijiagrigeneticsseeds@gmail.com",
+      "subject": "🎉 New SRA Reward Redemption (SRA4589231 - ₹500)",
+      "sentAt": "2026-08-13T23:41:18.007Z",
+      "body": "Reference ID: SRA-20260813-852730\n\nCoupon Code: SRA4589231\n\nReward: ₹500\n\nRetailer Name: harshit yadav\n\nShop Name: SHIVA BHEEJ BHANDAR\n\nDistributor: HARSHIT YADAV\n\nVillage: ETAH\n\nTehsil: KASGANJ\n\nDistrict: RAIPUR\n\nState: Uttar Pradesh\n\nPhone: 9760071788\n\nEmail: harshityadav6969@gmail.com\n\nGST: SGDHDHS82732\n\nSubmitted On: 14 Aug 2026, 05:11 am\n\nShop Photo: None"
+    },
+    {
+      "id": "EML-1001",
+      "to": "srashrijiagrigeneticsseeds@gmail.com",
+      "subject": "🎉 New SRA Reward Redemption",
+      "sentAt": "2026-08-02T14:30:05.000Z",
+      "body": "Reference ID: SRA-20260802-000088\nCoupon Code: SRA1122334\nReward: ₹500\nRetailer Name: Vikram Singh\nShop Name: Kisan Agro Kendra\nDistributor: Gupta Traders Pvt Ltd\nVillage: Khedi\nTehsil: Karnal\nDistrict: Karnal\nState: Haryana\nPhone: 9812044332\nEmail: vikram.kisan@gmail.com\nGST: 06AAACK1234F1Z9\nSubmitted On: 02 Aug 2026 02:30 PM"
+    }
+  ]
+}

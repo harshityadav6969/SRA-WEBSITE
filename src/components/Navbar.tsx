@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Leaf, Globe, Search, User, Menu, X, ArrowRight, ShieldCheck, ChevronDown, Compass, FileText, Sparkles } from 'lucide-react';
+import { Leaf, Globe, Search, User, Menu, X, ArrowRight, ShieldCheck, ChevronDown, Compass, FileText, Sparkles, Gift } from 'lucide-react';
 
 interface NavbarProps {
   currentLang: 'English' | 'Hindi' | 'Punjabi';
   setLang: (lang: 'English' | 'Hindi' | 'Punjabi') => void;
   onNavigate: (sectionId: string) => void;
   onOpenPortalModal: () => void;
+  onOpenRewardsModal?: () => void;
 }
 
-export default function Navbar({ currentLang, setLang, onNavigate, onOpenPortalModal }: NavbarProps) {
+export default function Navbar({ currentLang, setLang, onNavigate, onOpenPortalModal, onOpenRewardsModal }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -310,10 +311,22 @@ export default function Navbar({ currentLang, setLang, onNavigate, onOpenPortalM
               </AnimatePresence>
             </div>
 
+            {/* Rewards Portal Action */}
+            {onOpenRewardsModal && (
+              <button
+                onClick={onOpenRewardsModal}
+                className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-gray-950 font-extrabold text-xs px-3.5 py-2 rounded-xl transition-all shadow-[0_4px_12px_rgba(245,158,11,0.25)] border border-amber-300/40 cursor-pointer"
+                id="header-rewards-btn"
+              >
+                <Gift className="h-4 w-4 text-gray-950 animate-bounce" />
+                <span>Rewards Portal</span>
+              </button>
+            )}
+
             {/* Dealer Login Action */}
             <button
               onClick={onOpenPortalModal}
-              className="flex items-center gap-1.5 bg-brand-green hover:bg-brand-green/90 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all shadow-[0_4px_12px_rgba(13,92,52,0.15)]"
+              className="flex items-center gap-1.5 bg-brand-green hover:bg-brand-green/90 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all shadow-[0_4px_12px_rgba(13,92,52,0.15)] cursor-pointer"
               id="header-dealer-login-btn"
             >
               <User className="h-4 w-4" />
@@ -424,6 +437,19 @@ export default function Navbar({ currentLang, setLang, onNavigate, onOpenPortalM
                 {t.navResearch}
               </button>
             </div>
+
+            {onOpenRewardsModal && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenRewardsModal();
+                }}
+                className="w-full py-3 mb-3 bg-gradient-to-r from-amber-500 to-amber-600 text-gray-950 font-black text-sm rounded-xl flex items-center justify-center space-x-2 shadow cursor-pointer"
+              >
+                <Gift className="h-5 w-5 text-gray-950" />
+                <span>🎁 Redeem Coupon Rewards</span>
+              </button>
+            )}
 
             <button
               onClick={() => {

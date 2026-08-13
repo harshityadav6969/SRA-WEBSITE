@@ -12,6 +12,7 @@ import FarmerCalculators from './components/FarmerCalculators';
 import StorySections from './components/StorySections';
 import FarmerReviews from './components/FarmerReviews';
 import Portals from './components/Portals';
+import RewardsPortalModal from './components/RewardsPortalModal';
 import AIAssistantWidget from './components/AIAssistantWidget';
 import { Leaf, Phone, Mail, MapPin, Globe } from 'lucide-react';
 import { PRODUCTS } from './data';
@@ -20,10 +21,42 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [currentLang, setCurrentLang] = useState<'English' | 'Hindi' | 'Punjabi'>('English');
   const [isPortalOpen, setIsPortalOpen] = useState(false);
+  const [isRewardsOpen, setIsRewardsOpen] = useState(false);
+  const [initialCouponCode, setInitialCouponCode] = useState<string>('');
   
   // Lifted state for crop categories slider & video integration
   const [selectedCrop, setSelectedCrop] = useState<string>('All');
   const [activeProductId, setActiveProductId] = useState<string>(PRODUCTS[0].id);
+
+  // Check URL parameters / hash (e.g. ?rewards=true or ?code=SRA12345 or #rewards)
+  useEffect(() => {
+    const handleUrlState = () => {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hash = window.location.hash;
+        const code = urlParams.get('code') || urlParams.get('coupon') || urlParams.get('redeem') || '';
+        
+        if (
+          urlParams.get('rewards') === 'true' || 
+          urlParams.get('rewards') === '1' || 
+          urlParams.get('portal') === 'rewards' || 
+          hash === '#rewards' || 
+          code
+        ) {
+          setIsRewardsOpen(true);
+          if (code) {
+            setInitialCouponCode(code);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    handleUrlState();
+    window.addEventListener('popstate', handleUrlState);
+    return () => window.removeEventListener('popstate', handleUrlState);
+  }, []);
 
   // Auto transition after loading screen completed
   useEffect(() => {
@@ -34,7 +67,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-brand-light text-gray-900 font-sans antialiased selection:bg-brand-green/20 selection:text-brand-green selection:font-bold">
+    <div className="min-h-screen bg-brand-light text-gray-900 font-sans antialiased selection:bg-brand-green/20 selection:text-brand-green selection:font-bold overflow-x-hidden">
       <AnimatePresence mode="wait">
         {loading ? (
           <Loader onComplete={() => setLoading(false)} />
@@ -51,6 +84,7 @@ export default function App() {
                 }
               }}
               onOpenPortalModal={() => setIsPortalOpen(true)}
+              onOpenRewardsModal={() => setIsRewardsOpen(true)}
             />
 
             {/* Cinematic Narrative Hero Banner */}
@@ -196,6 +230,17 @@ export default function App() {
               currentLang={currentLang}
               isOpen={isPortalOpen}
               onClose={() => setIsPortalOpen(false)}
+            />
+
+            {/* Overlaid SRA Rewards Portal Modal */}
+            <RewardsPortalModal
+              currentLang={currentLang}
+              isOpen={isRewardsOpen}
+              onClose={() => {
+                setIsRewardsOpen(false);
+                setInitialCouponCode('');
+              }}
+              initialCode={initialCouponCode}
             />
 
             {/* Floating AI Assistant Widget (aside in right down) */}
