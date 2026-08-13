@@ -7,7 +7,7 @@ export const PRODUCTS: Product[] = [
     name: 'SRA 9048',
     cropType: 'Maize',
     category: 'Maize',
-    tagline: 'High starch recovery & premium kernel depth.',
+    tagline: 'High starch recovery & premium kernel depth',
     image: 'https://cdn.phototourl.com/free/2026-07-19-33d365fe-1746-435e-adda-bd768792c4f6.png',
     rating: 4.8,
     expectedYield: '34 - 38 Quintals/Acre',
