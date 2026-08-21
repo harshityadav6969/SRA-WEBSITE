@@ -1,4 +1,11 @@
-import { verifyCouponCode } from '../lib/rewards';
+import { createClient } from '@supabase/supabase-js';
+
+function getSupabase() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
 
 function setCors(res: any) {
   res.setHeader('Content-Type', 'application/json');
@@ -28,16 +35,46 @@ export default async function handler(req: any, res: any) {
       });
     }
 
-    const result = await verifyCouponCode(rawCode);
-
-    if (result.status === 'ERROR') {
-      return res.status(result.httpStatus || 500).json({
+    const supabase = getSupabase();
+    if (!supabase) {
+      return res.status(500).json({
         success: false,
-        message: result.message,
+        message: 'Rewards database is not configured on the server.',
       });
     }
 
-    return res.json(result);
+    const code = rawCode.trim().toUpperCase();
+    const { data, error } = await supabase
+      .from('coupons')
+      .select('code, reward_amount, status')
+      .eq('code', code)
+      .maybeSingle();
+
+    if (error) {
+      return res.status(500).json({ success: false, message: 'Database error' });
+    }
+
+    if (!data) {
+      return res.json({
+        success: false,
+        status: 'INVALID',
+        message: 'Invalid Coupon Code',
+      });
+    }
+
+    if (data.status === 'used' || data.status === 'redeemed') {
+      return res.json({
+        success: false,
+        status: 'REDEEMED',
+        message: 'This coupon has already been redeemed.',
+      });
+    }
+
+    return res.json({
+      success: true,
+      status: 'VALID',
+      message: 'Coupon Verified Successfully. Please complete your details to reveal your reward.',
+    });
   } catch (err: any) {
     console.error('[verify-coupon]', err);
     return res.status(500).json({
