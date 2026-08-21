@@ -4,8 +4,8 @@ import path from "path";
 import fs from "fs";
 import nodemailer from "nodemailer";
 import { createServer as createViteServer } from "vite";
-import { verifyCouponCode, claimCoupon } from "./api/lib/rewards";
-import { getSupabase } from "./api/lib/supabase";
+import { verifyCouponCode, claimCoupon } from "./api/_lib/rewards";
+import { getSupabase } from "./api/_lib/supabase";
 
 const app = express();
 const PORT = 3000;
