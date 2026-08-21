@@ -4,6 +4,8 @@ import path from "path";
 import fs from "fs";
 import nodemailer from "nodemailer";
 import { createServer as createViteServer } from "vite";
+import { verifyCouponCode, claimCoupon } from "./lib/rewards";
+import { getSupabase } from "./lib/supabase";
 
 const app = express();
 const PORT = 3000;
@@ -206,7 +208,7 @@ function saveDB(db: DBStructure) {
 // -------------------------------------------------------------
 
 // 1. Verify Coupon Code (Backend Validation)
-app.post("/api/rewards/verify-coupon", (req, res) => {
+app.post("/api/rewards/verify-coupon", async (req, res) => {
   const rawCode = req.body?.code;
   if (!rawCode || typeof rawCode !== "string") {
     return res.status(400).json({
@@ -214,6 +216,17 @@ app.post("/api/rewards/verify-coupon", (req, res) => {
       status: "INVALID",
       message: "Please enter a valid coupon code."
     });
+  }
+
+  if (getSupabase()) {
+    const result = await verifyCouponCode(rawCode);
+    if (result.status === "ERROR") {
+      return res.status(result.httpStatus || 500).json({
+        success: false,
+        message: result.message
+      });
+    }
+    return res.json(result);
   }
 
   const code = rawCode.trim().toUpperCase();
@@ -245,7 +258,7 @@ app.post("/api/rewards/verify-coupon", (req, res) => {
 });
 
 // 2. Submit Claim & Reveal Reward
-app.post("/api/rewards/claim", (req, res) => {
+app.post("/api/rewards/claim", async (req, res) => {
   const {
     code: rawCode,
     retailerName,
@@ -271,6 +284,65 @@ app.post("/api/rewards/claim", (req, res) => {
       success: false,
       message: "Please fill all required retailer information fields marked with *"
     });
+  }
+
+  if (getSupabase()) {
+    const result = await claimCoupon({
+      code: rawCode,
+      retailerName,
+      shopName,
+      distributor,
+      village,
+      tehsil,
+      district,
+      state,
+      phone,
+      email,
+      gst,
+      shopPhoto
+    });
+
+    if (!result.success) {
+      const status = 'httpStatus' in result ? result.httpStatus || 400 : 400;
+      return res.status(status).json(result);
+    }
+
+    const now = new Date(result.submittedAt);
+    const formattedDate = now.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    });
+
+    const emailBody = [
+      `Reference ID: ${result.referenceId}`,
+      `Coupon Code: ${rawCode.trim().toUpperCase()}`,
+      `Reward: ₹${result.rewardAmount}`,
+      `Retailer Name: ${String(retailerName).trim()}`,
+      `Shop Name: ${String(shopName).trim()}`,
+      `Distributor: ${String(distributor).trim()}`,
+      `Village: ${String(village).trim()}`,
+      `Tehsil: ${tehsil ? String(tehsil).trim() : "N/A"}`,
+      `District: ${String(district).trim()}`,
+      `State: ${String(state).trim()}`,
+      `Phone: ${String(phone).trim()}`,
+      `Email: ${email ? String(email).trim() : "N/A"}`,
+      `GST: ${gst ? String(gst).trim() : "N/A"}`,
+      `Submitted On: ${formattedDate}`,
+      `Shop Photo: ${shopPhoto ? "[Photo Uploaded]" : "None"}`
+    ].join("\n\n");
+
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "srashrijiagrigeneticsseeds@gmail.com";
+    const subject = `🎉 New SRA Reward Redemption (${rawCode.trim().toUpperCase()} - ₹${result.rewardAmount})`;
+
+    sendRealEmail(ADMIN_EMAIL, subject, emailBody).catch((err) => {
+      console.error("[EMAIL DISPATCH FAILED]", err);
+    });
+
+    return res.json(result);
   }
 
   const code = rawCode.trim().toUpperCase();

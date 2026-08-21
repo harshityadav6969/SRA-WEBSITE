@@ -138,7 +138,17 @@ export default function RewardsPortalModal({ isOpen, onClose, initialCode }: Rew
         body: JSON.stringify({ code: couponCode })
       });
 
-      const data = await response.json();
+      const rawText = await response.text();
+      let data: any = {};
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        setVerifying(false);
+        setVerifyStatus('invalid');
+        setVerifyMessage('❌ Server error during coupon verification. Please try again in a moment.');
+        return;
+      }
+
       setVerifying(false);
 
       const alreadyRedeemed =

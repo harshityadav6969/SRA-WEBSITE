@@ -1,4 +1,4 @@
-import { sendRealEmail } from '../../_lib/email';
+import { sendRealEmail } from '../../../lib/email';
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Content-Type', 'application/json');
