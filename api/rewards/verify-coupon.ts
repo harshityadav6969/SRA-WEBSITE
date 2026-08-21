@@ -1,4 +1,4 @@
-import { verifyCouponCode } from '../../lib/rewards';
+import { verifyCouponCode } from '../lib/rewards';
 
 function setCors(res: any) {
   res.setHeader('Content-Type', 'application/json');

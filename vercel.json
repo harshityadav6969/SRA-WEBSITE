@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/rewards/**/*.ts": {
+      "includeFiles": "api/lib/**"
+    }
+  },
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]

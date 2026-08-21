@@ -1,5 +1,5 @@
-import { claimCoupon } from '../../lib/rewards';
-import { sendRealEmail } from '../../lib/email';
+import { claimCoupon } from '../lib/rewards';
+import { sendRealEmail } from '../lib/email';
 
 function setCors(res: any) {
   res.setHeader('Content-Type', 'application/json');
