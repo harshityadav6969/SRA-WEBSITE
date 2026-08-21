@@ -141,14 +141,19 @@ export default function RewardsPortalModal({ isOpen, onClose, initialCode }: Rew
       const data = await response.json();
       setVerifying(false);
 
-      if (data.success && data.status === 'VALID') {
+      const alreadyRedeemed =
+        data.status === 'REDEEMED' ||
+        response.status === 410 ||
+        String(data.error || data.message || '').toLowerCase().includes('redeemed');
+
+      if ((data.success && data.status === 'VALID') || data.ok === true) {
         setVerifyStatus('valid');
         setVerifyMessage('✅ Coupon Verified Successfully! Please complete your details to reveal your reward.');
         // Transition to Step 2 after brief visual confirmation
         setTimeout(() => {
           setStep(2);
         }, 1200);
-      } else if (data.status === 'REDEEMED') {
+      } else if (alreadyRedeemed) {
         setVerifyStatus('redeemed');
         setVerifyMessage('⚠️ This coupon has already been redeemed.');
       } else {
