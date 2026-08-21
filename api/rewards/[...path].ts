@@ -15,8 +15,21 @@ function setCors(res: any) {
 
 function routeKey(req: any): string {
   const segments = req.query?.path;
-  if (Array.isArray(segments)) return segments.join('/');
-  if (typeof segments === 'string') return segments;
+  if (Array.isArray(segments) && segments.length > 0) {
+    return segments.join('/');
+  }
+  if (typeof segments === 'string' && segments) {
+    return segments;
+  }
+
+  const rawUrl = String(req.url || '');
+  const cleanUrl = rawUrl.split('?')[0];
+  const marker = '/api/rewards/';
+  const idx = cleanUrl.indexOf(marker);
+  if (idx >= 0) {
+    return cleanUrl.slice(idx + marker.length).replace(/\/$/, '');
+  }
+
   return '';
 }
 
